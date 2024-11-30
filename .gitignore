@@ -1,5 +1,6 @@
 bin/
 obj/
+*.vs/
 *.user
 *.suo
 *.cache
@@ -7,3 +8,4 @@ obj/
 *.pdb
 *.vscode/
 node_modules/
+/Zadatak_Mid_Developer .pdf

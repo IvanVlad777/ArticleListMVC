@@ -1,0 +1,31 @@
+-- SQL skripta
+
+--Upute za korištenje skripte
+--1. Otvori SQL Server Management Studio.
+--2. Poveži se na svoj SQL Server.
+--3. Klikni na "New Query" i otvorite datoteku `skripta.sql`.
+--4. Izvrši skriptu klikom na "Execute".
+
+CREATE TABLE Kategorije (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Naziv NVARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE Artikli (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Naziv NVARCHAR(100) NOT NULL,
+    Cijena DECIMAL(10, 2) NOT NULL CHECK (Cijena >= 0),
+    KategorijaID INT NOT NULL,
+    Opis NVARCHAR(MAX),
+    URLSlike NVARCHAR(2083),
+    FOREIGN KEY (KategorijaID) REFERENCES Kategorije(ID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE Korisnici (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    KorisnickoIme NVARCHAR(50) NOT NULL UNIQUE,
+    HashiranaLozinka NVARCHAR(255) NOT NULL,
+    Uloga NVARCHAR(20) CHECK (Uloga IN ('admin', 'korisnik')) NOT NULL
+);
