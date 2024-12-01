@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Models;
 using Microsoft.Data.SqlClient;
+using System;
 
 namespace DataAccess
 {
@@ -23,10 +24,26 @@ namespace DataAccess
 
         public void AddKorisnik(Korisnik korisnik)
         {
-            using var connection = new SqlConnection(_connectionString);
-            connection.Execute(
-                "INSERT INTO Korisnici (KorisnickoIme, HashiranaLozinka, Uloga) VALUES (@KorisnickoIme, @HashiranaLozinka, @Uloga)",
-                korisnik);
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+
+                var parameters = new
+                {
+                    KorisnickoIme = korisnik.KorisnickoIme,
+                    HashiranaLozinka = korisnik.HashiranaLozinka,
+                    Uloga = korisnik.Uloga.ToString().ToLower() // Osiguraj pravilnu formu
+                };
+
+                connection.Execute(
+                    "INSERT INTO Korisnici (KorisnickoIme, HashiranaLozinka, Uloga) VALUES (@KorisnickoIme, @HashiranaLozinka, @Uloga)",
+                    parameters);
+
+            } 
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
